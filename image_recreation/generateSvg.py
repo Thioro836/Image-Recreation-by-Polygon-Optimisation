@@ -38,10 +38,11 @@ def generateSvg(input_image, shape: str, n:int,width:int,height:int ,output, isP
     #les dimensions de l'image à générer
     image_width=500
     image_height=500
+    genotype = []
     svg_openTag = f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" version="1.1">'
     svg_closeTag = "</svg>"
     svg_all_line = ""
-    genotype = []
+   
     # print("taille",width,height)
     for i in range(n):
         x= random.randint(0, width-1)
@@ -60,8 +61,6 @@ def generateSvg(input_image, shape: str, n:int,width:int,height:int ,output, isP
     # # Écrire le contenu dans un fichier
     if(isPng == False):
         with open(output, "w") as svg_file:
-            content = svg_openTag + svg_all_line + svg_closeTag
-        print("Final SVG content:\n", content)  # Debug print
-        svg_file.write(content)
+            svg_file.write(svg_openTag + svg_all_line + svg_closeTag)
     #print(genotype)
     return genotype
