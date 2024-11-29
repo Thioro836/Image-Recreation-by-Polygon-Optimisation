@@ -45,7 +45,7 @@ print(f'Fichier de sortie l\'image transformée: {args.output} \n')
 print("***************PROCESS DE TRAITEMENT INITIE****************\n")
 
 #appel de la function pour générer le phenotype
-generateSvg(input_image=input_image, shape=args.shape, n=args.n, width=width, height=height,output=args.output)
+#generateSvg(input_image=input_image, shape=args.shape, n=args.n, width=width, height=height,output=args.output)
 genotype=generateSvg(input_image=input_image, shape=args.shape, n=args.n, width=width, height=height, output=args.output, isPng=True)
 generatePng(genotype=genotype,output=args.output,width=width,height=height)
 
