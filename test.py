@@ -1,45 +1,64 @@
-# # Contenu SVG sous forme de chaîne de caractères
-# svg_content = """<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" version="1.1">
-#     <!-- Dessiner un cercle bleu -->
-#     <circle cx="100" cy="100" r="50" fill="blue" />
-#     <!-- Ajouter un texte blanc -->
-#     <text x="70" y="105" fill="white" font-size="20">Hello SVG!</text>
-# </svg>"""
+from PIL import Image, ImageDraw
 
-# # Écrire le contenu dans un fichier
-# with open("example.svg", "w") as svg_file:
-#     svg_file.write(svg_content)
+# Exemple de génotype avec différents types de formes
+genotype = [
+    {"shape": "circle", "x": 50, "y": 70, "radius": 30, "color": (255, 0, 0)},  # Cercle rouge
+    {"shape": "square", "x": 120, "y": 100, "size": 40, "color": (0, 255, 0)},  # Carré vert
+    {"shape": "rectangle", "x": 200, "y": 150, "width": 60, "height": 30, "color": (0, 0, 255)},  # Rectangle bleu
+    {"shape": "polygon", "points": [(300, 50), (350, 70), (330, 120), (290, 100)], "color": (255, 255, 0)},  # Polygone jaune
+]
 
-# print("Image SVG créée : 'example.svg'")
+# Créer une image vide (par exemple, 400x400 pixels)
+image_width = 400
+image_height = 400
+image = Image.new("RGB", (image_width, image_height), color=(255, 255, 255))  # Fond blanc
 
+# Créer un objet ImageDraw pour dessiner sur l'image
+draw = ImageDraw.Draw(image)
 
-svg_balise_ouvrante='<svg xmlns="http://www.w3.org/2000/svg" version="1.1" '
-svg_width_value = "300"
-svg_width_content = "width=\"" + svg_width_value + "\" "
-svg_height_value = "300"
-svg_height_content = "height=\"" + svg_height_value + "\" "
-svg_balise_ouvranteTag = "> "
-svg_balise_fermante=' </svg>'
-
-test_svg_ligne = '<circle cx="100" cy="100" r="50" fill="blue" />'
-test_svg_ligne2 = '<circle cx="50" cy="50" r="30" fill="red" />'
-svg_newLine = "\n"
-
-full_baliseOuvrante = svg_balise_ouvrante + svg_width_content + svg_height_content + svg_balise_ouvranteTag 
-
-svg_contenent = full_baliseOuvrante + test_svg_ligne + test_svg_ligne2 + svg_balise_fermante
-
-all_svg_ligne =""
-for i in range(5):
-    all_svg_ligne = all_svg_ligne + test_svg_ligne
-
-print(svg_contenent)
-
-
-# Écrire le contenu dans un fichier
-with open("example1.svg", "w") as svg_file:
-    svg_file.write(svg_contenent)
+# Dessiner les formes à partir du génotype
+for shape in genotype:
+    if shape["shape"] == "circle":
+        # Dessiner un cercle
+        x = shape["x"]
+        y = shape["y"]
+        radius = shape["radius"]
+        color = shape["color"]
+        upper_left = (x - radius, y - radius)
+        bottom_right = (x + radius, y + radius)
+        draw.ellipse([upper_left, bottom_right], fill=color)
     
+    elif shape["shape"] == "square":
+        # Dessiner un carré
+        x = shape["x"]
+        y = shape["y"]
+        size = shape["size"]
+        color = shape["color"]
+        upper_left = (x, y)
+        bottom_right = (x + size, y + size)
+        draw.rectangle([upper_left, bottom_right], fill=color)
+    
+    elif shape["shape"] == "rectangle":
+        # Dessiner un rectangle
+        x = shape["x"]
+        y = shape["y"]
+        width = shape["width"]
+        height = shape["height"]
+        color = shape["color"]
+        upper_left = (x, y)
+        bottom_right = (x + width, y + height)
+        draw.rectangle([upper_left, bottom_right], fill=color)
+    
+    elif shape["shape"] == "polygon":
+        # Dessiner un polygone
+        points = shape["points"]
+        color = shape["color"]
+        draw.polygon(points, fill=color)
 
-print("Image SVG créée : 'example1.svg'")
-   
+# Sauvegarder l'image générée en PNG
+image.save("output.png")
+
+# Optionnel : Afficher l'image (si vous utilisez un environnement local, comme un IDE)
+image.show()
+
+print("Image PNG générée : output.png")

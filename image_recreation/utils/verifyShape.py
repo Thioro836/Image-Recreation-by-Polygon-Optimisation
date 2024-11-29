@@ -6,7 +6,7 @@ def verifyShape(shape: str) -> None:
     Parameters: shape: string \n
     returns: None
     """
-    authorizedShape = ["rect", "circle", "ellipse", "polygon"]
+    authorizedShape = ["rect", "circle", "ellipse", "polygon","square"]
 
     if shape in authorizedShape:
         return None
