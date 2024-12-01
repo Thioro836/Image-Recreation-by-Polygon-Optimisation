@@ -25,6 +25,15 @@ def generatePng(genotype: list, output:str, width:int, height:int):
             upper_left = (x, y)
             bottom_right = (x + width, y + height)
             draw.rectangle([upper_left, bottom_right], fill=color)
+        elif shape["shape"] == "ellipse":
+            # Dessiner un cercle
+            x = shape["x"]
+            y = shape["y"]
+            radius = shape["radius"]
+            color = shape["color"]
+            upper_left = (x - radius, y - radius)
+            bottom_right = (x + radius, y + radius)
+            draw.ellipse([upper_left, bottom_right], fill=color)
         elif shape["shape"] == "circle":
             # Dessiner un cercle
             x = shape["x"]
@@ -58,5 +67,5 @@ def generatePng(genotype: list, output:str, width:int, height:int):
     # Optionnel : Afficher l'image (si vous utilisez un environnement local, comme un IDE)
     # image.show()
 
-    print("Image PNG generer : output.png")
+    print("Image PNG generer "+output.split(".")[0] + ".png")
 
