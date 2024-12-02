@@ -1,6 +1,6 @@
 
 import random
-from image_recreation.utils.svg_square_tag import svg_square_tag
+from image_recreation.utils.svg_tags.svg_square_tag import svg_square_tag
 from image_recreation.utils.svg_tags.svg_circle_tag import svg_circle_tag
 from image_recreation.utils.svg_tags.svg_rect_tag import svg_rect_tag
 from image_recreation.utils.svg_tags.svg_ellipse_tag import svg_ellipse_tag
@@ -55,9 +55,6 @@ def generateSvg(input_image, shape: str, n:int,width:int,height:int ,output, isP
         y=random.randint(0,height-1)
         
         # Obtenir la couleur du pixel correspondant dans l'image source
-        #x = int(x *  width/image_width)  # Redimensionner la position pour l'image source
-        #y = int(y *  height/image_height)
-        # print(x,y)
         red, green, blue = input_image.getpixel((x, y))
         svg_all_line = svg_all_line + getSvgLine(shape=shape, x=x, y=y, red=red, green=green, blue=blue)
        # print(svg_all_line)

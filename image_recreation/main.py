@@ -9,6 +9,8 @@ from image_recreation.utils.svg_tags.svg_ellipse_tag import svg_ellipse_tag
 from image_recreation.generateSvg import generateSvg
 from image_recreation.generatePng import generatePng
 from image_recreation.mutate_genotype import mutate_genotype
+from image_recreation.crossover_genotypes import crossover_genotypes
+from image_recreation.crossover_genotypes import generate_random_genotype
 from PIL import Image
 
 import math
@@ -100,6 +102,16 @@ generatePng(genotype=mutated_genotype, output=mutated_png_output, width=width, h
 mutated_fitness = compute_fitness(mutated_png_output, target_image_path)
 
 print(f"Fitness après mutation : {mutated_fitness}")
+#crossover genotypes
 
-    
+genotype1= generate_random_genotype(100,"square")
+genotype2=generate_random_genotype(100,"rect")
+#print("Parent 1 (genotype1):", genotype1)
+#print("Parent 2 (genotype2):", genotype2)
+child_genotype=crossover_genotypes(genotype1,genotype2)
+#print("Enfant généré :", child_genotype)
+# Générer un nouveau PNG à partir du génotype muté
+crossover_png_output = args.output.split(".")[0] + "crossover.png"
+generatePng(genotype=mutated_genotype, output=crossover_png_output, width=width, height=height)
+
 
