@@ -57,7 +57,7 @@ def generateSvg(input_image, shape: str, n:int,width:int,height:int ,output, isP
         # Obtenir la couleur du pixel correspondant dans l'image source
         red, green, blue = input_image.getpixel((x, y))
         svg_all_line = svg_all_line + getSvgLine(shape=shape, x=x, y=y, red=red, green=green, blue=blue)
-       # print(svg_all_line)
+        #print(svg_all_line)
         genotype.append(getGenotypeLine(shape=shape, x=x, y=y, red=red, green=green, blue=blue))
 
 

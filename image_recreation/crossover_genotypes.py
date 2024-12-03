@@ -2,7 +2,7 @@ import random
 from image_recreation.utils.svg_tags.svg_circle_tag import svg_circle_tag
 from image_recreation.utils.svg_tags.svg_rect_tag import svg_rect_tag
 from image_recreation.utils.svg_tags.svg_square_tag import svg_square_tag
-def crossover_genotypes(genotype1, genotype2):
+def crossover_genotypes(genotype1:list, genotype2:list):
     """
     Applique un crossover entre deux génotypes pour en créer un nouveau.
     Le crossover est effectué à un seul point.
@@ -26,37 +26,48 @@ def crossover_genotypes(genotype1, genotype2):
 
     return child_genotype
 #generer des formes aleatoires
-def generate_random_genotype(n,shape):
-    genotype=[]
+def generate_random_genotype(n, shape):
+    genotype = []
     for _ in range(n):
         if shape == "circle":
-            genotype.append(svg_circle_tag(
-                cx=random.randint(0, 500),
-                cy=random.randint(0, 500),
-                rayon=random.randint(10, 50),
-                red=random.randint(0, 255),
-                green=random.randint(0, 255),
-                blue=random.randint(0, 255),
-            ))
-        elif(shape=="square"):
-             genotype.append(svg_square_tag(
-                x=random.randint(0, 500),
-                y=random.randint(0, 500),
-                width=random.randint(10, 50),
-                height=random.randint(10, 50),
-                red=random.randint(0, 255),
-                green=random.randint(0, 255),
-                blue=random.randint(0, 255),
-            ))
-        elif(shape=="rect"):
-            genotype.append(svg_rect_tag(
-                x=random.randint(0, 500),
-                y=random.randint(0, 500),
-                width=random.randint(10, 50),
-                height=random.randint(10, 50),
-                red=random.randint(0, 255),
-                green=random.randint(0, 255),
-                blue=random.randint(0, 255),
-            ))
+            genotype.append({
+                "shape": "circle",
+                "x": random.randint(0, 500),
+                "y": random.randint(0, 500),
+                "radius": random.randint(10, 50),
+                "color": (
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                ),
+            })
+        elif shape == "square":
+            size = random.randint(10, 50)
+            genotype.append({
+                "shape": "square",
+                "x": random.randint(0, 500),
+                "y": random.randint(0, 500),
+                "width": size,
+                "height": size,
+                "color": (
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                ),
+            })
+        elif shape == "rect":
+            genotype.append({
+                "shape": "rectangle",
+                "x": random.randint(0, 500),
+                "y": random.randint(0, 500),
+                "width": random.randint(10, 50),
+                "height": random.randint(10, 50),
+                "color": (
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                ),
+            })
     return genotype
+
             
