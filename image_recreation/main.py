@@ -1,7 +1,9 @@
 import argparse
 import numpy as np
 import random
+from image_recreation.local_search_mutation import run_local_search_with_mutation
 from image_recreation.utils.clearConsole import clearConsole
+from image_recreation import local_search
 from image_recreation.utils.verifyShape import verifyShape
 from image_recreation.utils.svg_tags.svg_circle_tag import svg_circle_tag
 from image_recreation.utils.svg_tags.svg_rect_tag import svg_rect_tag
@@ -11,6 +13,8 @@ from image_recreation.generatePng import generatePng
 from image_recreation.mutate_genotype import mutate_genotype
 from image_recreation.crossover_genotypes import crossover_genotypes
 from image_recreation.crossover_genotypes import generate_random_genotype
+from image_recreation.local_search import run_local_search
+from image_recreation.fitness import compute_fitness 
 from PIL import Image
 
 import math
@@ -21,6 +25,8 @@ parser = argparse.ArgumentParser(description='-------Recuperation des input-----
 parser.add_argument('--input', type=str, required=True, help="l'image a transformer")
 parser.add_argument('--shape', type=str, required=True, help="la forme de la figure")
 parser.add_argument('--n', type=int, required=True, help="le nombre de figure a utiliser")
+parser.add_argument('--iterations', type=str, required=True, help="Nombre d'itérations ")
+parser.add_argument('--method', type=str, required=True, choices=['random', 'local'], help="Méthode de métaheuristique à utiliser")
 parser.add_argument('--output', type=str, required=True, help="l'image transformée")
 
 # Analyser les arguments
@@ -62,28 +68,6 @@ generatePng(genotype=genotype, output=png_output_path, width=width, height=heigh
 generated_image_path = png_output_path # Image générée
 target_image_path = args.input      # Image cible
 
-def compute_fitness(generated_image_path, target_image_path):
-    # Ouvrir les images
-    img1 = Image.open(generated_image_path)
-    img2 = Image.open(target_image_path)
-
-    # Convertir les images en tableaux numpy
-    img1_array = np.array(img1)
-    img2_array = np.array(img2)
-      # Vérifiez que les dimensions des deux images correspondent
-    if img1_array.shape != img2_array.shape:
-        raise ValueError("Les dimensions des deux images ne correspondent pas.")
-    # Calculer l'écart entre les pixels des deux images (différence absolue)
-    diff = np.abs(img1_array - img2_array)
-    # Calculer le nombre total de pixels
-    total_pixel=img1_array.shape[0] * img1_array.shape[1]
-    # Somme des différences
-    fitness_total = np.sum(diff)
-    fitness_value=fitness_total/total_pixel
-    
-    return fitness_value
-
-
 # Calculer la fitness
 try:
     fitness = compute_fitness(generated_image_path, target_image_path)
@@ -115,4 +99,23 @@ child_genotype=crossover_genotypes(genotype1,genotype2)
 crossover_png_output = args.output.split(".")[0] + "crossover.png"
 generatePng(genotype=child_genotype, output=crossover_png_output, width=width, height=height)
 
+#exécution de  local search
+run_local_search(input_image_path=args.input, shape=args.shape, n=args.n, output_image_path=args.output, max_iterations=args.iterations)
+# Exécution de  la métaheuristique choisie
+if args.method == 'random':
+    run_local_search(input_image_path=args.input, shape=args.shape, n=args.n, output_image_path=args.output, max_iterations=args.iterations)
+elif args.method == 'local': 
+    run_local_search_with_mutation(input_image_path=args.input, shape=args.shape, n=args.n, output_image_path=args.output, max_iterations=args.iterations, mutation_rate=0.1)
 
+# Exécuter la recherche aléatoire
+print("Exécution de la recherche aléatoire...")
+best_genotype_random, best_fitness_random = run_local_search(input_image_path=args.input, shape=args.shape, n=args.n, output_image_path=args.output, max_iterations=args.iterations)
+
+# Exécuter la recherche locale avec mutation
+print("Exécution de la recherche locale avec mutation...")
+best_genotype_local, best_fitness_local = run_local_search_with_mutation(input_image_path=args.input, shape=args.shape, n=args.n, output_image_path=args.output, max_iterations=args.iterations, mutation_rate=0.1)
+
+# Comparer les résultats
+print(f"Meilleure fitness (Recherche Aléatoire) : {best_fitness_random}")
+print(f"Meilleure fitness (Recherche Locale avec Mutation) : {best_fitness_local}")
+ 
